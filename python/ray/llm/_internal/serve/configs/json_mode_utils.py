@@ -24,7 +24,7 @@ _strict_metaschema = {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "https://json-schema.org/draft/2020-12/strict",
     "$ref": "https://json-schema.org/draft/2020-12/schema",
-    "unevaluatedProperties": False,
+    "unevaluatedProperties": True,  # Disable strict mode
 }
 strict_validator = Draft202012Validator(_strict_metaschema)
 
