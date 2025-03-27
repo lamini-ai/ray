@@ -59,6 +59,7 @@ from ray.llm._internal.serve.configs.server_models import (
     LLMConfig,
     ModelData,
     Model,
+    AutoscalingConfig,
 )
 from ray.llm._internal.serve.deployments.routers.middleware import (
     SetRequestIdMiddleware,

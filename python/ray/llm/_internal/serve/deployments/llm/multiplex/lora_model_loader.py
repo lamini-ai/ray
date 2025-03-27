@@ -82,6 +82,7 @@ class LoraModelLoader:
         if lora_model_id in self.disk_cache:
             return self.disk_cache[lora_model_id]
 
+        """
         if lora_model_id not in self.active_syncing_tasks:
             lora_mirror_config = await get_lora_mirror_config(lora_model_id, llm_config)
             # Cannot use _load_model directly in create_task
@@ -97,6 +98,18 @@ class LoraModelLoader:
         # Ensure that cancellation of the current request doesn't
         # affect other requests
         disk_config = await asyncio.shield(task)
+        """
+
+        # tricky support load LoRA model from local disk, not using self.active_syncing_tasks
+        lora_id = get_lora_id(clean_model_id(lora_model_id))
+        job_dir = os.environ.get("LAMINI_JOBS_DIR", "/app/lamini/jobs")
+        local_path = os.path.join(job_dir, lora_id)
+        disk_config = DiskMultiplexConfig(
+            model_id=lora_model_id,
+            max_total_tokens=None,
+            local_path=local_path,
+            lora_assigned_int_id=global_id_manager.next(),
+        )
 
         # If we are successful, add the result to the disk cache
         # This will not be reached if the task raises an exception
