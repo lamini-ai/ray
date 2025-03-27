@@ -56,7 +56,7 @@ class JSONSchemaValidator:
                 "$schema": "https://json-schema.org/draft/2020-12/schema",
                 "$id": "https://json-schema.org/draft/2020-12/strict",
                 "$ref": "https://json-schema.org/draft/2020-12/schema",
-                "unevaluatedProperties": False,
+                "unevaluatedProperties": True,
             }
             self._validator = jsonschema.Draft202012Validator(_strict_metaschema)
 
