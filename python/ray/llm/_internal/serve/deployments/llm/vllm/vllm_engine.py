@@ -438,6 +438,12 @@ class VLLMEngine:
             logger.info(
                 f"Request {vllm_generation_request.request_id} started. "
                 f"Prompt: {vllm_generation_request.prompt}"
+                f"Request context: {vllm_generation_request.serve_request_context}"
+                f"Model config: {vllm_generation_request.model_config}"
+                f"Sampling params: {vllm_generation_request.sampling_params}"
+                f"Multi modal data: {vllm_generation_request.multi_modal_data}"
+                f"Lora request: {vllm_generation_request.lora_request}"
+                f"Disk multiplex config: {vllm_generation_request.disk_multiplex_config}"
             )
         # Construct a results generator from vLLM
         results_generator: AsyncGenerator["RequestOutput", None] = self.engine.generate(
