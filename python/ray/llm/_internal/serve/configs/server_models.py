@@ -130,6 +130,40 @@ class LoraConfig(BaseModelExtended):
         return value.rstrip("/")
 
 
+class MoMEConfig(BaseModelExtended):
+    dynamic_mome_loading_path: Optional[str] = Field(
+        default=None,
+        description="Cloud storage path where MoME adapter weights are stored.",
+    )
+    max_num_adapters_per_replica: PositiveInt = Field(
+        default=16,
+        description="The maximum number of adapters load on each replica.",
+    )
+    download_timeout_s: Optional[float] = Field(
+        DEFAULT_MULTIPLEX_DOWNLOAD_TIMEOUT_S,
+        description=(
+            "How much time the download subprocess has to download a single "
+            "MoME before a timeout. None means no timeout."
+        ),
+    )
+    max_download_tries: int = Field(
+        DEFAULT_MULTIPLEX_DOWNLOAD_TRIES,
+        description="The maximum number of download retries.",
+    )
+
+    @field_validator("dynamic_mome_loading_path")
+    def validate_dynamic_mome_loading_path(cls, value: Optional[str]):
+        if value is None:
+            return value
+
+        assert value.startswith("s3://") or value.startswith("gs://"), (
+            "Only AWS S3 and Google Cloud Storage are supported. The "
+            'dynamic_mome_loading_path must start with "s3://" or "gs://". '
+            f'Got "{value}" instead.'
+        )
+        return value.rstrip("/")
+
+
 class ModelLoadingConfig(BaseModelExtended):
     model_id: str = Field(
         description="The ID that should be used by end users to access this model.",
@@ -194,6 +228,10 @@ class LLMConfig(BaseModelExtended):
 
     lora_config: Optional[LoraConfig] = Field(
         default=None, description="Settings for LoRA adapter."
+    )
+
+    mome_config: Optional[MoMEConfig] = Field(
+        default=None, description="Settings for MoME adapter."
     )
 
     deployment_config: Dict[str, Any] = Field(
