@@ -39,6 +39,7 @@ from ray.llm._internal.serve.deployments.llm.multiplex.utils import (
     get_base_model_id,
     get_lora_model_ids,
     get_lora_model_metadata,
+    get_mome_model_metadata,
 )
 from ray.llm._internal.serve.configs.openai_api_models import (
     ChatCompletionRequest,
@@ -178,6 +179,9 @@ class LLMRouter:
         _get_lora_model_metadata_func: Optional[
             Callable[[str, LLMConfig], Awaitable[Dict[str, Any]]]
         ] = None,
+        _get_mome_model_metadata_func: Optional[
+            Callable[[str, LLMConfig], Awaitable[Dict[str, Any]]]
+        ] = None,
     ):
         self._default_serve_handles: Dict[str, DeploymentHandle] = {}
         self._llm_configs: Dict[str, LLMConfig] = {}
@@ -190,6 +194,9 @@ class LLMRouter:
         self._get_lora_model_metadata_func = (
             _get_lora_model_metadata_func or self._default_get_lora_model_metadata_func
         )
+        self._get_mome_model_metadata_func = (
+            _get_mome_model_metadata_func or self._default_get_mome_model_metadata_func
+        )
 
         # Setup _default_serve_handles and _llm_configs asynchronously.
         self._init_completed = asyncio.Event()
@@ -201,6 +208,11 @@ class LLMRouter:
         self, model_id: str, llm_config: LLMConfig
     ) -> Dict[str, Any]:
         return await get_lora_model_metadata(model_id, llm_config)
+
+    async def _default_get_mome_model_metadata_func(
+        self, model_id: str, llm_config: LLMConfig
+    ) -> Dict[str, Any]:
+        return await get_mome_model_metadata(model_id, llm_config)
 
     async def _setup_handle_and_config_maps(
         self, llm_deployments: List[DeploymentHandle]
