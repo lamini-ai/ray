@@ -35,7 +35,7 @@ RUN pip install --no-cache-dir \
     awscli asyncache httpx jsonref
 
 # replace `lora_model_loader.py`, support load loRA model from local file
-COPY ../python/ray/llm/_internal/serve/deployments/llm/multiplex/lora_model_loader.py /home/ray/anaconda3/lib/python3.10/site-packages/ray/llm/_internal/serve/deployments/llm/multiplex/lora_model_loader.py
+COPY python/ray/llm/_internal/serve/deployments/llm/multiplex/lora_model_loader.py /home/ray/anaconda3/lib/python3.10/site-packages/ray/llm/_internal/serve/deployments/llm/multiplex/lora_model_loader.py
 
 # replace `json_mode_utils.py`, support json_mode unevaluatedProperties True
-COPY ../python/ray/llm/_internal/serve/configs/json_mode_utils.py /home/ray/anaconda3/lib/python3.10/site-packages/ray/llm/_internal/serve/configs/json_mode_utils.py
+COPY python/ray/llm/_internal/serve/configs/json_mode_utils.py /home/ray/anaconda3/lib/python3.10/site-packages/ray/llm/_internal/serve/configs/json_mode_utils.py

@@ -18,13 +18,13 @@ You will need to copy ray source code changes in the corresponding dockerfile.
 
 ``` sh
 # build -cpu
-docker build -f ./Dockerfile_cpu --platform=linux/amd64  -t powerml/ray:2.44.0-py312-cpu .
+docker build -f ./lamini/Dockerfile_cpu --platform=linux/amd64  -t powerml/ray:2.44.0-py312-cpu .
 
 # build -cuda
-docker build -f ./Dockerfile_cuda --platform=linux/amd64  -t powerml/ray:2.44.0-py312-cuda .
+docker build -f ./lamini/Dockerfile_cuda --platform=linux/amd64  -t powerml/ray:2.44.0-py312-cuda .
 
 # build -rocm
-docker build -f ./Dockerfile_rocm_base_vllm --platform=linux/amd64  -t powerml/ray:2.44.0-py312-rocm .
+docker build -f ./lamini/Dockerfile_rocm_base_vllm --platform=linux/amd64  -t powerml/ray:2.44.0-py312-rocm .
 ```
 
 1. Push to Docker Hub.
