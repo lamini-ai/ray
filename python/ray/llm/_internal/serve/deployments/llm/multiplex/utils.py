@@ -305,38 +305,6 @@ async def get_lora_model_metadata(
     }
 
 
-async def get_mome_model_metadata(
-    model_id: str, llm_config: LLMConfig
-) -> Dict[str, Any]:
-    """Get the mome model metadata for a given model id and llm config.
-
-    This is used to get the metadata for the model with the given model id.
-    """
-    # Note (genesu): `model_id` passed is a mome model id where it's in a form of
-    #     base_model_id:suffix:id
-    base_model_id = get_base_model_id(model_id)
-    mome_id = get_lora_id(model_id)  # We can use the same function for lora and mome since it's just parsing the model_id
-    base_path = llm_config.mome_config.dynamic_mome_loading_path
-
-    # Examples of the variables:
-    #   model_id: "meta-llama/Meta-Llama-3.1-8B-Instruct:my_suffix:aBc1234"
-    #   base_path: "s3://ray-llama-weights"
-    #   bucket_uri: "s3://ray-llama-weights/my_suffix:aBc1234"
-    (
-        bucket_uri,
-        ft_context_length,
-    ) = await download_multiplex_config_info(mome_id, base_path)
-
-    return {
-        "model_id": model_id,
-        "base_model_id": base_model_id,
-        "max_request_context_length": ft_context_length,
-        # Note (genesu): `bucket_uri` affects where the lora weights are downloaded
-        # from remote location.
-        "bucket_uri": bucket_uri,
-    }
-
-
 async def get_lora_mirror_config(
     model_id: str,
     llm_config: LLMConfig,
