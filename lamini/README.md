@@ -1,0 +1,36 @@
+#### Custom Ray images for Lamini
+
+There are three images.
+
+- `-cpu` for Ray head and cpu worker.
+- `-cuda` for Ray worker run on Nvidia's accelerators.
+
+- `-rocm` for Ray worker run on AMD's accelerators
+  - base on vllm image, (used for now)
+  - base on Ray cpu image. (need build and install vllm wheel)
+
+You will need to copy ray source code changes in the corresponding dockerfile.
+
+#### How to build: (example commands)
+
+1. Change dockerfile as needed.
+1. Build and tag with base image info.
+
+``` sh
+# build -cpu
+docker build -f ./Dockerfile_cpu --platform=linux/amd64  -t powerml/ray:2.44.0-py312-cpu .
+
+# build -cuda
+docker build -f ./Dockerfile_cuda --platform=linux/amd64  -t powerml/ray:2.44.0-py312-cuda .
+
+# build -rocm
+docker build -f ./Dockerfile_rocm_base_vllm --platform=linux/amd64  -t powerml/ray:2.44.0-py312-rocm .
+```
+
+1. Push to Docker Hub.
+
+``` sh
+docker push powerml/ray:2.44.0-py312-cpu
+docker push powerml/ray:2.44.0-py312-cuda
+docker push powerml/ray:2.44.0-py312-rocm
+```
