@@ -1,11 +1,11 @@
 #### Custom Ray images for Lamini
 
-There are three images.
+There are 3 images and 4 Dockerfiles.
 
 - `-cpu` for Ray head and cpu worker.
 - `-cuda` for Ray worker run on Nvidia's accelerators.
 
-- `-rocm` for Ray worker run on AMD's accelerators
+- `-rocm` for Ray worker run on AMD's accelerators - Ray does not have an official image for ROCM.
   - base on vllm image, (used for now)
   - base on Ray cpu image. (need build and install vllm wheel)
 
