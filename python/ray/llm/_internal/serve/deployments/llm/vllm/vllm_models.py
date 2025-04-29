@@ -31,7 +31,7 @@ vllm = try_import("vllm")
 
 if TYPE_CHECKING:
     from vllm.lora.request import LoRARequest
-
+    from vllm.mome.request import MoMERequest
 logger = get_logger(__name__)
 
 
@@ -202,4 +202,18 @@ class VLLMGenerationRequest(GenerationRequest):
                 lora_int_id=disk_vllm_config.lora_assigned_int_id,
                 lora_local_path=disk_vllm_config.local_path,
                 long_lora_max_len=disk_vllm_config.max_total_tokens,
+            )
+
+
+    @property
+    def mome_request(self) -> "MoMERequest":
+        disk_vllm_config = self.disk_multiplex_config
+        if not disk_vllm_config:
+            return None
+        else:
+            return vllm.mome.request.MoMERequest(
+                mome_name=disk_vllm_config.model_id,
+                mome_int_id=disk_vllm_config.lora_assigned_int_id,
+                mome_local_path=disk_vllm_config.local_path,
+                long_mome_max_len=disk_vllm_config.max_total_tokens,
             )
