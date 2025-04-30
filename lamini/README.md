@@ -3,7 +3,7 @@
 There are 3 images and 4 Dockerfiles.
 
 - `-cpu` for Ray head and cpu worker.
-- `-cuda` for Ray worker run on Nvidia's accelerators.
+- `-cuda` for Ray worker run on Nvidia's accelerators (abbreviated as cu124 for cuda + version).
 
 - `-rocm` for Ray worker run on AMD's accelerators - Ray does not have an official image for ROCM.
   - base on vllm image, (used for now)
@@ -22,7 +22,7 @@ You will need to copy ray source code changes in the corresponding dockerfile.
 docker build -f ./lamini/Dockerfile_cpu --platform=linux/amd64  -t powerml/ray:2.44.0-py312-cpu .
 
 # build -cuda
-docker build -f ./lamini/Dockerfile_cuda --platform=linux/amd64  -t powerml/ray:2.44.0-py312-cuda .
+docker build -f ./lamini/Dockerfile_cuda --platform=linux/amd64  -t powerml/ray:2.44.0-py312-cu124 .
 
 # build -rocm
 docker build -f ./lamini/Dockerfile_rocm_base_vllm --platform=linux/amd64  -t powerml/ray:2.44.0-py312-rocm .
@@ -31,7 +31,7 @@ docker build -f ./lamini/Dockerfile_rocm_base_vllm --platform=linux/amd64  -t po
 ``` sh
 # push to Docker Hub
 docker push powerml/ray:2.44.0-py312-cpu
-docker push powerml/ray:2.44.0-py312-cuda
+docker push powerml/ray:2.44.0-py312-cu124
 docker push powerml/ray:2.44.0-py312-rocm
 ```
 
