@@ -1,0 +1,44 @@
+FROM rayproject/ray:2.44.0-py312-cpu
+
+USER root
+ENV DEBIAN_FRONTEND=noninteractive
+ENV HSA_FORCE_FINE_GRAIN_PCIE=1
+
+# Install ROCm Dep
+RUN apt-get update && apt-get install -y \
+    wget gnupg2 lsb-release libnuma-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Add ROCm Repo and Install（ROCm 6.3）
+RUN echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/rocm.gpg] http://repo.radeon.com/rocm/apt/6.3/ jammy main' \
+    | tee /etc/apt/sources.list.d/rocm.list && \
+    wget -qO - http://repo.radeon.com/rocm/rocm.gpg.key | gpg --dearmor -o /usr/share/keyrings/rocm.gpg && \
+    apt-get update && apt-get install -y \
+    kmod rocminfo hipfft miopen-hip hipsparse rocm-libs \
+    && rm -rf /var/lib/apt/lists/*
+
+USER ray
+# Install PyTorch for ROCm
+RUN pip uninstall torch torchvision torchaudio -y && \
+    rm -rf /home/ray/anaconda3/lib/python3.10/site-packages/torch* && \
+    pip install --no-cache-dir --pre torch --index-url https://download.pytorch.org/whl/rocm6.3
+
+# TODO: Install VLLM from wheel file
+# COPY vllm_whl_path /tmp/vllm_whl_path
+# RUN pip install --no-cache-dir vllm_whl_path
+
+# Install Ray Serve and other dependencies
+RUN pip install --no-cache-dir \
+    'ray[serve]>=2.43.0' \
+    xgrammar==0.1.11 \
+    pynvml==12.0.0 \
+    awscli asyncache httpx jsonref
+
+# replace `lora_model_loader.py`, support load loRA model from local file
+COPY python/ray/llm/_internal/serve/deployments/llm/multiplex/lora_model_loader.py /home/ray/anaconda3/lib/python3.10/site-packages/ray/llm/_internal/serve/deployments/llm/multiplex/lora_model_loader.py
+
+# replace `json_mode_utils.py`, support json_mode unevaluatedProperties True
+COPY python/ray/llm/_internal/serve/configs/json_mode_utils.py /home/ray/anaconda3/lib/python3.10/site-packages/ray/llm/_internal/serve/configs/json_mode_utils.py
+
+# replace `vllm_engine.py`, add more logging for vllm engine
+COPY ./ray_code/vllm_engine.py /home/ray/anaconda3/lib/python3.12/site-packages/ray/llm/_internal/serve/deployments/llm/vllm/vllm_engine.py

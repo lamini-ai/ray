@@ -1,0 +1,17 @@
+FROM rayproject/ray:2.44.0-py312-cu124
+
+RUN pip install --no-cache-dir \
+    'ray[serve,llm]>=2.44.0' \
+    'vllm>=0.7.2' \
+    xgrammar==0.1.11 \
+    pynvml==12.0.0 \
+    awscli asyncache httpx
+
+# replace `lora_model_loader.py`, support load loRA model from local file
+COPY python/ray/llm/_internal/serve/deployments/llm/multiplex/lora_model_loader.py /home/ray/anaconda3/lib/python3.12/site-packages/ray/llm/_internal/serve/deployments/llm/multiplex/lora_model_loader.py
+
+# replace `json_mode_utils.py`, support json_mode unevaluatedProperties True
+COPY python/ray/llm/_internal/serve/configs/json_mode_utils.py /home/ray/anaconda3/lib/python3.12/site-packages/ray/llm/_internal/serve/configs/json_mode_utils.py
+
+# replace `vllm_engine.py`, add more logging for vllm engine
+COPY ./ray_code/vllm_engine.py /home/ray/anaconda3/lib/python3.12/site-packages/ray/llm/_internal/serve/deployments/llm/vllm/vllm_engine.py
