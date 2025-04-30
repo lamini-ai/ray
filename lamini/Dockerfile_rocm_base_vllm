@@ -16,3 +16,6 @@ COPY python/ray/llm/_internal/serve/deployments/llm/multiplex/lora_model_loader.
 
 # replace `json_mode_utils.py`, support json_mode unevaluatedProperties True
 COPY python/ray/llm/_internal/serve/configs/json_mode_utils.py /usr/local/lib/python3.12/dist-packages/ray/llm/_internal/serve/configs/json_mode_utils.py
+
+# replace `vllm_engine.py`, add more logging for vllm engine
+COPY ./ray_code/vllm_engine.py /home/ray/anaconda3/lib/python3.12/site-packages/ray/llm/_internal/serve/deployments/llm/vllm/vllm_engine.py
