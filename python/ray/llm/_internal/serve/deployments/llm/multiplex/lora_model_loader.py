@@ -100,6 +100,7 @@ class LoraModelLoader:
         disk_config = await asyncio.shield(task)
         """
 
+        ## Start Lamini custom code ##
         # tricky support load LoRA model from local disk, not using self.active_syncing_tasks
         lora_id = get_lora_id(clean_model_id(lora_model_id))
         job_dir = os.environ.get("LAMINI_JOBS_DIR", "/app/lamini/jobs")
@@ -110,6 +111,7 @@ class LoraModelLoader:
             local_path=local_path,
             lora_assigned_int_id=global_id_manager.next(),
         )
+        ## End Lamini custom code ##
 
         # If we are successful, add the result to the disk cache
         # This will not be reached if the task raises an exception
