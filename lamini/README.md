@@ -13,7 +13,7 @@ You will need to copy ray source code changes in the corresponding dockerfile.
 
 #### How to build: (example commands)
 
-1. Change dockerfile as needed.
+1. Change dockerfile as needed. Note that for `Dockerfile_rocm_base_vllm`, the path to ray is different as it builds on top of `vllm`.
 1. Build and tag with base image info.
 1. Push to Docker Hub.
 
