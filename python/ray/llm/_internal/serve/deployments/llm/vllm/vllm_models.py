@@ -190,11 +190,15 @@ class VLLMGenerationRequest(GenerationRequest):
     serve_request_context: Optional[serve.context._RequestContext] = None
     disk_multiplex_config: Optional[DiskMultiplexConfig] = None
 
+    ## Start Lamini custom code ##
+    use_mome: bool = False # Default to False, i.e. use LoRA.
+    ## End Lamini custom code ##
+
     @property
     def lora_request(self) -> "LoRARequest":
 
         disk_vllm_config = self.disk_multiplex_config
-        if not disk_vllm_config:
+        if not disk_vllm_config or self.use_mome: # Customized for Lamini.
             return None
         else:
             return vllm.lora.request.LoRARequest(
@@ -204,11 +208,11 @@ class VLLMGenerationRequest(GenerationRequest):
                 long_lora_max_len=disk_vllm_config.max_total_tokens,
             )
 
-
+    ## Start Lamini custom code ##
     @property
     def mome_request(self) -> "MoMERequest":
         disk_vllm_config = self.disk_multiplex_config
-        if not disk_vllm_config:
+        if not disk_vllm_config or not self.use_mome: # Customized for Lamini.
             return None
         else:
             return vllm.mome.request.MoMERequest(
@@ -217,3 +221,4 @@ class VLLMGenerationRequest(GenerationRequest):
                 mome_local_path=disk_vllm_config.local_path,
                 long_mome_max_len=disk_vllm_config.max_total_tokens,
             )
+    ## End Lamini custom code ##

@@ -511,6 +511,7 @@ class LLMServer(_LLMServerBase):
         """
 
         logger.info(f"Received streaming request {request_id}")
+        logger.info(f"HELLO prompt: {prompt}")
         try:
             multiplexed_model_id = serve.get_multiplexed_model_id()
 
