@@ -527,6 +527,7 @@ class LLMServer(_LLMServerBase):
                     use_mome = True
                 disk_lora_model = await self._disk_lora_model(multiplexed_model_id)
             else:
+                use_mome = False
                 disk_lora_model = None
 
             prompt_output = self._llm_config.prompt_format.generate_prompt(prompt)
