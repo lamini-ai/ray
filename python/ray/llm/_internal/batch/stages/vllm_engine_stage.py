@@ -217,7 +217,6 @@ class vLLMEngineWrapper:
         else:
             image = []
 
-        logger.info(f"HELLO row: {row}")
         # If the model name is given and is different from the model
         # set in the config, then this is a LoRA.
         lora_request = None
