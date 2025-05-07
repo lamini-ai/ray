@@ -215,6 +215,7 @@ class VLLMGenerationRequest(GenerationRequest):
         if not disk_vllm_config or not self.use_mome: # Customized for Lamini.
             return None
         else:
+            logger.info(f"HELLO mome_request: {disk_vllm_config}")
             return vllm.mome.request.MoMERequest(
                 mome_name=disk_vllm_config.model_id,
                 mome_int_id=disk_vllm_config.lora_assigned_int_id,

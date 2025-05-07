@@ -451,7 +451,7 @@ class VLLMEngine:
             ),
             request_id=vllm_generation_request.request_id,
             lora_request=vllm_generation_request.lora_request,  # type: ignore
-            # mome_request=vllm_generation_request.mome_request,  # type: ignore
+            mome_request=vllm_generation_request.mome_request,  # type: ignore
         )
 
         # Loop over the results

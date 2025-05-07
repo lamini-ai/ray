@@ -511,7 +511,6 @@ class LLMServer(_LLMServerBase):
         """
 
         logger.info(f"Received streaming request {request_id}")
-        logger.info(f"HELLO prompt: {prompt}")
         try:
             multiplexed_model_id = serve.get_multiplexed_model_id()
 
@@ -519,6 +518,13 @@ class LLMServer(_LLMServerBase):
                 assert (
                     self._llm_config.lora_config is not None
                 ), "Must setup lora config for multiplexed requests."
+                logger.info(f"HELLO multiplexed_model_id: {multiplexed_model_id}")
+                if multiplexed_model_id.startswith("mome_mini/"): # If mome_mini is used, it means it's a LoRA model not MoME.
+                    use_mome = False
+                    multiplexed_model_id = multiplexed_model_id.replace("mome_mini/", "")
+                    logger.info(f"HELLO mome_mini removed: {multiplexed_model_id}")
+                else:
+                    use_mome = True
                 disk_lora_model = await self._disk_lora_model(multiplexed_model_id)
             else:
                 disk_lora_model = None
@@ -545,6 +551,7 @@ class LLMServer(_LLMServerBase):
                 "request_id": request_id,
                 "sampling_params": sampling_params,
                 "disk_multiplex_config": disk_lora_model,
+                "use_mome": use_mome,
                 "serve_request_context": serve.context._serve_request_context.get(),
             }
             if image:
