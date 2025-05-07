@@ -54,8 +54,6 @@ class vLLMEngineRequest(BaseModel):
     params: Any
     # LoRA request.
     lora_request: Optional[Any] = None
-    # MoME request.
-    mome_request: Optional[Any] = None
 
     class Config:
         validate_assignment = True
@@ -139,10 +137,6 @@ class vLLMEngineWrapper:
         # LoRA related.
         self.lora_lock = asyncio.Lock()
         self.lora_name_to_request = {}
-
-        # MoME related.
-        self.mome_lock = asyncio.Lock()
-        self.mome_name_to_request = {}
 
         # Convert the task type back to a string to pass to the engine.
         kwargs["task"] = self.task_type.value
@@ -276,7 +270,6 @@ class vLLMEngineWrapper:
             images=image,
             params=params,
             lora_request=lora_request,
-            mome_request=mome_request,
         )
         self.request_id += 1
         return request
