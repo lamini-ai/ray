@@ -220,6 +220,5 @@ class VLLMGenerationRequest(GenerationRequest):
                 mome_name=disk_vllm_config.model_id,
                 mome_int_id=disk_vllm_config.lora_assigned_int_id,
                 mome_local_path=disk_vllm_config.local_path,
-                long_mome_max_len=disk_vllm_config.max_total_tokens,
             )
     ## End Lamini custom code ##

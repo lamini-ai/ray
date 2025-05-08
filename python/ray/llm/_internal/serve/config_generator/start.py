@@ -79,6 +79,7 @@ def _get_model_with_validation(
     gpu_type: Optional[GPUType],
     tensor_parallelism: Optional[int],
     enable_lora: Optional[bool],
+    enable_mome: Optional[bool],
     num_loras_per_replica: Optional[int],
 ):
     if model_id and model_id not in DEFAULT_MODEL_ID_TO_GPU:
@@ -93,6 +94,7 @@ def _get_model_with_validation(
             gpu_type=gpu_type,
             tensor_parallelism=tensor_parallelism,
             enable_lora=enable_lora,
+            enable_mome=enable_mome,
             num_loras_per_replica=num_loras_per_replica,
         )
     else:
@@ -120,6 +122,9 @@ def gen_config(
     ] = None,
     enable_lora: Annotated[
         Optional[bool], typer.Option(help="Whether to enable LoRA serving", hidden=True)
+    ] = False,
+    enable_mome: Annotated[
+        Optional[bool], typer.Option(help="Whether to enable MoME serving", hidden=True)
     ] = False,
     # TODO (shrekris): Expose these hidden options after the API stabilizes.
     external_model_id: Annotated[
@@ -168,6 +173,7 @@ def gen_config(
             gpu_type=gpu_type,
             tensor_parallelism=tensor_parallelism,
             enable_lora=enable_lora,
+            enable_mome=enable_mome,
             num_loras_per_replica=num_loras_per_replica,
         )
     else:

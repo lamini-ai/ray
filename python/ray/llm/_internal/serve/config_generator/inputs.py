@@ -24,6 +24,7 @@ from ray.llm._internal.serve.config_generator.utils.models import (
     TEXT_COMPLETION_MODEL_TYPE,
     ModelType,
     TextCompletionLoraModelConfig,
+    TextCompletionMomeModelConfig,
     TextCompletionModelConfig,
 )
 from ray.llm._internal.serve.config_generator.utils.prompt import (
@@ -151,6 +152,7 @@ def get_input_model_via_args(
     gpu_type: GPUType,
     tensor_parallelism: int,
     enable_lora: Optional[bool],
+    enable_mome: Optional[bool],
     num_loras_per_replica: Optional[int],
 ) -> TextCompletionModelConfig:
     if enable_lora:
@@ -162,15 +164,27 @@ def get_input_model_via_args(
             max_num_lora_per_replica=max_num_lora_per_replica,
             uri=default_lora_uri,
         )
+    ## Start Lamini custom code ##
+    elif enable_mome:
+        max_num_mome_per_replica = (
+            num_loras_per_replica or _DEFAULT_NUM_LORA_PER_REPLICA
+        )
+        default_mome_uri = get_lora_storage_uri()
+        mome_config = TextCompletionMomeModelConfig(
+            max_num_mome_per_replica=max_num_mome_per_replica,
+            uri=default_mome_uri,
+        )
+    ## End Lamini custom code ##
     else:
         lora_config = None
-
+        mome_config = None
     return convert_inputs_to_text_completion_model(
         model_id=model_id,
         hf_token=hf_token,
         gpu_type=gpu_type,
         tensor_parallelism=tensor_parallelism,
         lora_config=lora_config,
+        mome_config=mome_config,
     )
 
 

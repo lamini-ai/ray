@@ -38,7 +38,12 @@ def get_model_config(input_model_config: TextCompletionModelConfig) -> Dict[str,
         input_model_config,
         model_config,
     )
-
+    ## Start Lamini custom code ##
+    model_config = maybe_get_mome_enabled_config(
+        input_model_config,
+        model_config,
+    )
+    ## End Lamini custom code ##
     return model_config
 
 
@@ -113,9 +118,33 @@ def maybe_get_lora_enabled_config(
     else:
         return base_config
 
+def maybe_get_mome_enabled_config(
+    input_model_config: TextCompletionModelConfig,
+    base_config: Dict[str, Any],
+):
+    """
+    If the input model contains mome config, this method decorates the base
+    config with mome-specific configurations.
+    """
+    if input_model_config.mome_config:
+        max_num_adapters_per_replica = (
+            input_model_config.mome_config.max_num_mome_per_replica
+        )
+
+        res = copy.deepcopy(base_config)
+        res["mome_config"] = {
+            "dynamic_mome_loading_path": input_model_config.mome_config.uri,
+            "max_num_adapters_per_replica": max_num_adapters_per_replica,
+        }
+
+        res.setdefault("engine_kwargs", {})["enable_mome"] = True
+        res.setdefault("engine_kwargs", {})["max_mome_rank"] = 32
+        res.setdefault("engine_kwargs", {})["max_momes"] = max_num_adapters_per_replica
+        return res
+    else:
+        return base_config
 
 _BASE_SERVE_CONFIG = "base_serve_config.yaml"
-
 
 def get_serve_base_config() -> Dict[str, Any]:
     # Construct the full path to the YAML file

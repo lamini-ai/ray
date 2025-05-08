@@ -3,6 +3,7 @@ from typing import Optional
 from ray.llm._internal.serve.config_generator.utils.gpu import GPUType
 from ray.llm._internal.serve.config_generator.utils.models import (
     TextCompletionLoraModelConfig,
+    TextCompletionMomeModelConfig,
     TextCompletionModelConfig,
 )
 
@@ -15,6 +16,7 @@ def convert_inputs_to_text_completion_model(
     hf_token: Optional[str] = None,
     remote_storage_uri: Optional[str] = None,
     lora_config: Optional[TextCompletionLoraModelConfig] = None,
+    mome_config: Optional[TextCompletionMomeModelConfig] = None,
     reference_model_id: Optional[str] = None,
 ) -> TextCompletionModelConfig:
     return TextCompletionModelConfig(
@@ -24,5 +26,6 @@ def convert_inputs_to_text_completion_model(
         gpu_type=gpu_type,
         tensor_parallelism=tensor_parallelism,
         lora_config=lora_config,
+        mome_config=mome_config,
         reference_model_id=reference_model_id,
     )

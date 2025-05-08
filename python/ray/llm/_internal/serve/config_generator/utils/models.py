@@ -25,6 +25,13 @@ class TextCompletionLoraModelConfig(BaseModel):
     )
 
 
+class TextCompletionMomeModelConfig(BaseModel):
+    max_num_mome_per_replica: int
+    uri: Optional[str] = Field(
+        None,
+        description="If not provided, we default to `<RAYLLM_HOME_DIR>/lora_ckpts`",
+    )
+
 class TextCompletionModelConfig(ServeModel):
     type: Literal["TextCompletion"] = TEXT_COMPLETION_MODEL_TYPE
 
@@ -34,3 +41,4 @@ class TextCompletionModelConfig(ServeModel):
     )
     tensor_parallelism: int
     lora_config: Optional[TextCompletionLoraModelConfig] = None
+    mome_config: Optional[TextCompletionMomeModelConfig] = None
