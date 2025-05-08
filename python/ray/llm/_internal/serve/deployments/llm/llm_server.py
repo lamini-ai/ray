@@ -516,9 +516,9 @@ class LLMServer(_LLMServerBase):
 
             if multiplexed_model_id:
                 assert (
-                    self._llm_config.lora_config is not None
-                ), "Must setup lora config for multiplexed requests."
-                logger.info(f"HELLO multiplexed_model_id: {multiplexed_model_id}")
+                    self._llm_config.lora_config is not None or self._llm_config.mome_config is not None
+                ), "Must setup lora or mome config for multiplexed requests."
+                use_mome = self._llm_config.mome_config is not None # Lamini custom code, set use_mome to True if mome_config is set
                 disk_lora_model = await self._disk_lora_model(multiplexed_model_id)
             else:
                 disk_lora_model = None
@@ -545,7 +545,7 @@ class LLMServer(_LLMServerBase):
                 "request_id": request_id,
                 "sampling_params": sampling_params,
                 "disk_multiplex_config": disk_lora_model,
-                # "use_mome": use_mome,
+                "use_mome": use_mome,
                 "serve_request_context": serve.context._serve_request_context.get(),
             }
             if image:
