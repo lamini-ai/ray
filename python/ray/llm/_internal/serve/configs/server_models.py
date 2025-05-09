@@ -196,6 +196,11 @@ class LLMConfig(BaseModelExtended):
         default=None, description="Settings for LoRA adapter."
     )
 
+    # Lamini custom code, add mome_config but can just use lora_config for now
+    mome_config: Optional[LoraConfig] = Field(
+        default=None, description="Settings for MoME adapter."
+    )
+
     deployment_config: Dict[str, Any] = Field(
         default_factory=dict,
         description="""
