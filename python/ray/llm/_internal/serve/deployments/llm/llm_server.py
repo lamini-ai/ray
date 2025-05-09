@@ -515,6 +515,7 @@ class LLMServer(_LLMServerBase):
             multiplexed_model_id = serve.get_multiplexed_model_id()
 
             if multiplexed_model_id:
+                logger.info(f"HELLO _llm_config is: {self._llm_config}")
                 assert (
                     self._llm_config.lora_config is not None or self._llm_config.mome_config is not None
                 ), "Must setup lora or mome config for multiplexed requests."
