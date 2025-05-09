@@ -20,9 +20,9 @@ COPY python/ray/llm/_internal/serve/configs/json_mode_utils.py ${PYTHON_PATH}/ra
 COPY python/ray/llm/_internal/serve/deployments/llm/vllm/vllm_engine.py ${PYTHON_PATH}/ray/llm/_internal/serve/deployments/llm/vllm/vllm_engine.py
 
 ## for MoME integration ##
-COPY python/ray/llm/_internal/serve/deployments/llm/vllm/vllm_models.py ${PYTHON_PATH}/ray/llm/_internal/serve/deployments/llm/vllm/vllm_models.py
-COPY python/ray/llm/_internal/serve/deployments/llm/llm_server.py ${PYTHON_PATH}/ray/llm/_internal/serve/deployments/llm/llm_server.py
-COPY python/ray/llm/_internal/serve/deployments/llm/vllm/vllm_engine.py ${PYTHON_PATH}/ray/llm/_internal/serve/deployments/llm/vllm/vllm_engine.py
+# COPY python/ray/llm/_internal/serve/deployments/llm/vllm/vllm_models.py ${PYTHON_PATH}/ray/llm/_internal/serve/deployments/llm/vllm/vllm_models.py
+# COPY python/ray/llm/_internal/serve/deployments/llm/llm_server.py ${PYTHON_PATH}/ray/llm/_internal/serve/deployments/llm/llm_server.py
+# COPY python/ray/llm/_internal/serve/deployments/llm/vllm/vllm_engine.py ${PYTHON_PATH}/ray/llm/_internal/serve/deployments/llm/vllm/vllm_engine.py
 COPY python/ray/llm/_internal/serve/config_generator/generator.py ${PYTHON_PATH}/ray/llm/_internal/serve/config_generator/generator.py
 # COPY python/ray/llm/_internal/serve/config_generator/inputs.py ${PYTHON_PATH}/ray/llm/_internal/serve/config_generator/inputs.py
 COPY python/ray/llm/_internal/serve/config_generator/start.py ${PYTHON_PATH}/ray/llm/_internal/serve/config_generator/start.py
