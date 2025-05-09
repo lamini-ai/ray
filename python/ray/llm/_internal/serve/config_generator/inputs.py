@@ -165,6 +165,7 @@ def get_input_model_via_args(
             uri=default_lora_uri,
         )
     ## Start Lamini custom code ##
+        mome_config = None
     elif enable_mome:
         max_num_mome_per_replica = (
             num_loras_per_replica or _DEFAULT_NUM_LORA_PER_REPLICA
@@ -174,6 +175,7 @@ def get_input_model_via_args(
             max_num_mome_per_replica=max_num_mome_per_replica,
             uri=default_mome_uri,
         )
+        lora_config = None
     ## End Lamini custom code ##
     else:
         lora_config = None
