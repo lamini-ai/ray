@@ -133,7 +133,7 @@ def maybe_get_mome_enabled_config(
 
         res = copy.deepcopy(base_config)
         res["mome_config"] = {
-            "dynamic_mome_loading_path": input_model_config.mome_config.uri,
+            "dynamic_lora_loading_path": input_model_config.mome_config.uri, # MoME uses the same config as lora_config
             "max_num_adapters_per_replica": max_num_adapters_per_replica,
         }
 
