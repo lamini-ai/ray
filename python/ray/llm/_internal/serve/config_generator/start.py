@@ -159,9 +159,9 @@ def gen_config(
 ):
     """Starts an interactive session to generate RayLLM YAML configs."""
 
-    if (override_lora_uri or num_loras_per_replica) and not enable_lora:
+    if (override_lora_uri or num_loras_per_replica) and not (enable_lora or enable_mome):
         raise ValueError(
-            "--enable-lora is not set. --enable-lora must be set "
+            "--enable-lora or --enable-mome must be set "
             "to use --override-lora-uri or --num-loras-per-replica."
         )
 
