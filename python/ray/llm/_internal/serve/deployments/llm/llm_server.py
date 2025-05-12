@@ -513,15 +513,15 @@ class LLMServer(_LLMServerBase):
         logger.info(f"Received streaming request {request_id}")
         try:
             multiplexed_model_id = serve.get_multiplexed_model_id()
-
+            logger.info(f"HELLO _llm_config is: {self._llm_config}")
             if multiplexed_model_id:
-                logger.info(f"HELLO _llm_config is: {self._llm_config}")
                 assert (
                     self._llm_config.lora_config is not None or self._llm_config.mome_config is not None
                 ), "Must setup lora or mome config for multiplexed requests."
                 use_mome = self._llm_config.mome_config is not None # Lamini custom code, set use_mome to True if mome_config is set
                 disk_lora_model = await self._disk_lora_model(multiplexed_model_id)
             else:
+                use_mome = False
                 disk_lora_model = None
 
             prompt_output = self._llm_config.prompt_format.generate_prompt(prompt)
