@@ -1,8 +1,11 @@
 FROM rayproject/ray:2.44.0-py312-cpu
 
+# Install vllm from local wheel to include custom changes
+COPY lamini/vllm-0.7.2.post2.dev102+g4365059e.cpu-cp312-cp312-linux_x86_64.whl /tmp/
+
 RUN pip install --no-cache-dir \
     'ray[serve,llm]>=2.44.0' \
-    'vllm>=0.7.2' \
+    /tmp/vllm-0.7.2.post2.dev102+g4365059e.cpu-cp312-cp312-linux_x86_64.whl \
     xgrammar==0.1.11 \
     pynvml==12.0.0 \
     awscli asyncache httpx
