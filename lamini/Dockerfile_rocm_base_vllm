@@ -1,4 +1,4 @@
-FROM powerml/inference-engine-amd:v0.7.2
+FROM powerml/inference-engine-amd:v0.7.2-001
 
 RUN apt-get update && apt-get install -y wget
 
