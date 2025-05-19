@@ -1,9 +1,9 @@
-FROM powerml/inference-engine-amd:v0.7.2-eda-base-test
+FROM powerml/inference-engine-amd:v0.7.2-001
 
 RUN apt-get update && apt-get install -y wget
 
 RUN pip install --no-cache-dir \
-    'ray[serve]>=2.44.0' \
+    'ray[serve]==2.44.0' \
     backoff \
     async_timeout \
     pydantic==2.9.2 \
