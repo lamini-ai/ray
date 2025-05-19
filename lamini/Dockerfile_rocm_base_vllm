@@ -2,6 +2,19 @@ FROM powerml/inference-engine-amd:v0.7.2-mome-001
 
 RUN apt-get update && apt-get install -y wget
 
+# Install Miniconda
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh && \
+    bash /tmp/miniconda.sh -b -p /opt/conda && \
+    rm /tmp/miniconda.sh
+
+# Add conda to path
+ENV PATH="/opt/conda/bin:${PATH}"
+
+# Create conda environment with Python 3.12.9
+RUN conda create -n py3129 python=3.12.9 -y
+ENV PATH="/opt/conda/envs/py3129/bin:${PATH}"
+
+# Install packages with pip in the conda environment
 RUN pip install --no-cache-dir \
     'ray[serve]==2.44.0' \
     backoff \
@@ -12,7 +25,7 @@ RUN pip install --no-cache-dir \
     awscli asyncache httpx jsonref
 
 # Define Python path as a variable for easier maintenance
-ENV PYTHON_PATH=/usr/local/lib/python3.12/dist-packages
+ENV PYTHON_PATH=/opt/conda/envs/py3129/lib/python3.12/site-packages
 
 # replace `lora_model_loader.py`, support load loRA model from local file
 COPY python/ray/llm/_internal/serve/deployments/llm/multiplex/lora_model_loader.py ${PYTHON_PATH}/ray/llm/_internal/serve/deployments/llm/multiplex/lora_model_loader.py
