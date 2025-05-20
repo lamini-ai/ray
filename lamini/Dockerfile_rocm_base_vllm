@@ -8,7 +8,7 @@ COPY lamini/vllm-0.7.2.post2.dev102+g4365059ed.rocm631-cp312-cp312-linux_x86_64.
 # Install packages with pip in the conda environment
 RUN pip install --no-cache-dir \
     'ray[serve]==2.44.0' \
-    /tmp/vllm-0.7.2.post2.dev102+g4365059ed.rocm631-cp312-cp312-linux_x86_64.whl --no-deps \
+    /tmp/vllm-0.7.2.post2.dev102+g4365059ed.rocm631-cp312-cp312-linux_x86_64.whl \
     xgrammar==0.1.11 \
     backoff \
     async_timeout \
