@@ -1,18 +1,6 @@
-FROM powerml/inference-engine-amd:v0.7.2-mome-001
+FROM powerml/vllm-rocm:v0.7.2
 
 RUN apt-get update && apt-get install -y wget
-
-# Install Miniconda
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh && \
-    bash /tmp/miniconda.sh -b -p /opt/conda && \
-    rm /tmp/miniconda.sh
-
-# Add conda to path
-ENV PATH="/opt/conda/bin:${PATH}"
-
-# Create conda environment with Python 3.12.9
-RUN conda create -n py3129 python=3.12.9 -y
-ENV PATH="/opt/conda/envs/py3129/bin:${PATH}"
 
 # Install vllm from local wheel to include custom changes
 COPY lamini/vllm-0.7.2.post2.dev102+g4365059ed.rocm631-cp312-cp312-linux_x86_64.whl /tmp/
