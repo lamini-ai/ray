@@ -327,6 +327,14 @@ class LLMConfig(BaseModelExtended):
                 download_timeout_s=self.lora_config.download_timeout_s,
                 max_download_tries=self.lora_config.max_download_tries,
             )
+        ## Start Lamini custom code ##
+        elif self.mome_config:
+            multiplex_config = ServeMultiplexConfig(
+                max_num_models_per_replica=self.mome_config.max_num_adapters_per_replica,
+                download_timeout_s=self.mome_config.download_timeout_s,
+                max_download_tries=self.mome_config.max_download_tries,
+            )
+        ## End Lamini custom code ##
         return multiplex_config
 
     def get_engine_config(self):
