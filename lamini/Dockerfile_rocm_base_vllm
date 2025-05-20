@@ -11,6 +11,8 @@ RUN pip install --no-cache-dir \
     async_timeout \
     pydantic==2.9.2 \
     pynvml==12.0.0 \
+    fastapi==0.109.2 \
+    starlette==0.36.3 \
     awscli asyncache httpx jsonref
 
 # Install vllm from local wheel to include custom changes
